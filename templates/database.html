@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block pageheading %}Home{% endblock %}
+
+{% block main %}
+    <div class="category_menu">
+        <ul>
+        {% for category in categories %}
+         <li><a href="/database/{{ category[0] }}">{{ category[1] }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="entry">
+        {% for entry in entries %}
+        <div class="entry-box">
+            <p class="entry-box-heading"><strong>{{ entry[0] }}</strong></p>
+            <p class="entry-box-heading"><strong>{{ entry[1] }}</strong></p>
+            <p class="entry-box-info">{{ entry[2] }}</p>
+            <img src="/static/images/{{ entry[3] }}">
+            <p><strong>Category: </strong>{{ entry[4] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

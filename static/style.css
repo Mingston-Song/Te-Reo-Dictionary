@@ -1,5 +1,5 @@
 * {
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Monaco', monospace;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -80,17 +80,17 @@ a, a:visited {
     text-decoration: none;
 }
 
-.product-box img {
+.entry-box img {
     /*max-width:200px;*/
 }
 
-.products {
+.entry {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
-.product-box {
+.entry-box {
     /*width: 13vw;*/
     width: 32%;
     /*float: left;*/
@@ -102,31 +102,31 @@ a, a:visited {
     margin-bottom: 0.5rem;
 }
 
-.product-box-heading {
+.entry-box-heading {
     padding: 0.5rem;
 }
 
-.product-box-image {
+.entry-box-image {
     height: 150px;
     overflow: hidden;
 }
 
-.product-box-info {
+.entry-box-info {
     padding: 0.5rem;
 
 }
 
-.product-box h3 {
+.entry-box h3 {
     font-size: 1.2rem;
     text-align: center;
 }
 
-.product-box p {
+.entry-box p {
     font-size: 0.8rem;
     margin-bottom: 0.3rem;
 }
 
-.product-box a {
+.entry-box a {
     border: 1px solid tomato;
     padding: 0.3rem;
     text-align: right;
