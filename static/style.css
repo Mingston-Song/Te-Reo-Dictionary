@@ -1,3 +1,12 @@
+:root {
+    --red: #e81010;
+    --dark-red: #a00808;
+    --white: #F2F6F6;
+    --gray: #c8caca;
+    --dark-gray: #282028;
+    --black: #041010;
+}
+
 * {
     font-family: 'Monaco', monospace;
     padding: 0;
@@ -6,14 +15,12 @@
 }
 
 body {
-    background-color: rgba(236, 240, 241, 1.0);
+    background-color: var(--white);
 }
 
 .container {
-    width: 60vw;
+    width: 70vw;
     margin: auto;
-    /*background-color: rgba(52, 73, 94, 1.0);*/
-    /*color: rgba(236, 240, 241, 1.0);*/
 }
 
 .container::after {
@@ -40,13 +47,12 @@ h2 {
 }
 
 nav {
-    background-color: rgba(44, 62, 80, 1.0); /* darkest blue */
+    background-color: var(--dark-gray);
     text-align: center;
-    /*color: rgba(52, 152, 219, 1.0);!*light blue*!*/
     font-size: 1.5rem;
-    padding-top: 0.4rem;
-    padding-bottom: 0.7rem;
-    color: rgba(52, 152, 219, 1.0); /*light blue*/
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--red);
 }
 
 .navbar-brand {
@@ -60,28 +66,20 @@ nav {
 }
 
 nav a {
-    /*margin:0 0.5rem;*/
     padding: 0 0.5rem;
     font-size: 1.5rem;
-
-    /*border: 1px solid rgba(52, 152, 219, 1.0);*/
-    /*border-radius:0.5rem;*/
 }
 
 nav a:hover {
-    /*color: rgba(44, 62, 80, 1.0); !* darkest blue *!*/
-    /*background-color: rgba(52, 152, 219, 1.0); !*light blue*!*/
-    border-bottom: 3px solid rgba(52, 152, 219, 1.0);
+    border-bottom: 3px solid var(--red);
 }
 
 a, a:visited {
-    color: rgba(52, 152, 219, 1.0);
-    /*color:hotpink;*/
+    color: var(--red);
     text-decoration: none;
 }
 
 .entry-box img {
-    /*max-width:200px;*/
 }
 
 .entry {
@@ -91,14 +89,9 @@ a, a:visited {
 }
 
 .entry-box {
-    /*width: 13vw;*/
-    width: 32%;
-    /*float: left;*/
-    /*display: table-cell;*/
-    /*padding: 0.5rem;*/
-    /*margin: 1vw;*/
-    border: 1px solid rgba(189, 195, 199, 1.0);
-    color: rgba(44, 62, 80, 1.0);
+    width: 100%;
+    border: 1px solid var(--gray);
+    color: var(--dark-gray);
     margin-bottom: 0.5rem;
 }
 
@@ -123,11 +116,12 @@ a, a:visited {
 
 .entry-box p {
     font-size: 0.8rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.1rem;
+    text-align: center;
 }
 
 .entry-box a {
-    border: 1px solid tomato;
+    border: 1px solid var(--red);
     padding: 0.3rem;
     text-align: right;
 }
@@ -178,13 +172,21 @@ table {
 .cart-table td {
     padding: 0.2rem 1rem;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid var(--white);
 }
 
 .cart-total {
     font-weight: bold;
 }
 
+.filters {
+    margin-bottom: 0.5rem;
+    display: flex;
+}
+
+.search-bar {
+    alignment: center;
+}
 
 @media only screen and (max-width: 600px) {
     .container {
@@ -201,4 +203,60 @@ table {
     .product-box {
         width: 100%;
     }
+}
+
+
+/* The dropdown container */
+.dropdown {
+    overflow: hidden;
+    margin-right: 0.5rem;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+    background-color: var(--gray);
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.dropdown:hover .dropbtn {
+    background-color: var(--gray);
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--white);
+    min-width: 160px;
+    max-height: 50%;
+    height: fit-content;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+    overflow: auto;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    float: none;
+    color: var(--black);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: var(--gray);
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
 }
