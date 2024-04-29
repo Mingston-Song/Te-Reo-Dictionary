@@ -1,10 +1,11 @@
 :root {
-    --red: #e81010;
+    --red: #E50000;
     --dark-red: #a00808;
-    --white: #F2F6F6;
+    --white: #FFFFFF;
+    --light-gray: #F4F8F8;
     --gray: #c8caca;
-    --dark-gray: #282028;
-    --black: #041010;
+    --dark-gray: #959696;
+    --black: #000000;
 }
 
 * {
@@ -15,7 +16,7 @@
 }
 
 body {
-    background-color: var(--white);
+    background-color: var(--light-gray);
 }
 
 .container {
@@ -47,7 +48,7 @@ h2 {
 }
 
 nav {
-    background-color: var(--dark-gray);
+    background-color: var(--black);
     text-align: center;
     font-size: 1.5rem;
     padding-top: 1rem;
@@ -90,9 +91,14 @@ a, a:visited {
 
 .entry-box {
     width: 100%;
-    border: 1px solid var(--gray);
-    color: var(--dark-gray);
+    background: var(--white);
+    border: 0 solid var(--gray);
+    color: var(--black);
     margin-bottom: 0.5rem;
+}
+
+.entry-box:hover {
+    box-shadow: 0 0 5px var(--gray);
 }
 
 .entry-box-heading {
@@ -224,8 +230,12 @@ table {
 }
 
 /* Add a red background color to navbar links on hover */
-.dropdown:hover .dropbtn {
+.dropbtn {
     background-color: var(--gray);
+}
+
+.dropdown:hover .dropbtn{
+    background-color: var(--dark-gray);
 }
 
 /* Dropdown content (hidden by default) */
