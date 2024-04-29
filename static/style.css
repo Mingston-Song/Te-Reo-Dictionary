@@ -83,13 +83,21 @@ a, a:visited {
 .entry-box img {
 }
 
-.entry {
+a .entry {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
 .entry-box {
+    width: 100%;
+    background: var(--white);
+    border: 0 solid var(--gray);
+    color: var(--black);
+    margin-bottom: 0.5rem;
+}
+
+.big-entry-box {
     width: 100%;
     background: var(--white);
     border: 0 solid var(--gray);

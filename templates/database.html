@@ -21,12 +21,14 @@
     </div>
     <div class="entry">
         {% for entry in entries %}
-            <div class="entry-box">
-                <h3 class="entry-box-heading"><strong>{{ entry[0] }}</strong></h3>
-                <p class="entry-box-heading"><strong>({{ entry[4] }}) {{ entry[1] }}</strong></p>
-                <p class="entry-box-info">{{ entry[2] }}</p>
-                <p class="entry-box-info"><strong>Level </strong>{{ entry[3] }}</p>
-            </div>
+            <a href="/entry/{{ entry[0] }}">
+                <div class="entry-box">
+                    <h3 class="entry-box-heading"><strong>{{ entry[1] }}</strong></h3>
+                    <p class="entry-box-heading"><strong>({{ entry[5] }}) {{ entry[2] }}</strong></p>
+                    <p class="entry-box-info">{{ entry[3] }}</p>
+                    <p class="entry-box-info"><strong>Level </strong>{{ entry[4] }}</p>
+                </div>
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

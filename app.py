@@ -2,7 +2,6 @@ from flask import Flask, render_template, redirect, request, session
 import sqlite3
 from flask_bcrypt import Bcrypt
 
-
 DATABASE = "database.db"
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -26,7 +25,9 @@ def render_home():
 @app.route('/database')
 def render_database():
     con = connect(DATABASE)
-    query = "SELECT entries.maori, entries.english, entries.definition, entries.level, categories.name FROM entries INNER JOIN categories ON entries.category_id=categories.id"
+    query = """SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name 
+    FROM entries 
+    INNER JOIN categories ON entries.category_id=categories.id"""
     cur = con.cursor()
     cur.execute(query)
     entry_list = cur.fetchall()
@@ -41,11 +42,15 @@ def render_database():
 @app.route('/database/<category_id>')
 def render_database_categories(category_id):
     con = connect(DATABASE)
-    query = "SELECT entries.maori, entries.english, entries.definition, entries.level, categories.name FROM entries INNER JOIN categories ON entries.category_id=categories.id WHERE category_id=?"
+    query = """SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name 
+    FROM entries 
+    INNER JOIN categories ON entries.category_id=categories.id 
+    WHERE category_id=?"""
     cur = con.cursor()
     cur.execute(query, (category_id,))
     entry_list = cur.fetchall()
-    query = "SELECT id, name FROM categories"
+    query = """SELECT id, name 
+    FROM categories"""
     cur = con.cursor()
     cur.execute(query)
     category_list = cur.fetchall()
@@ -59,9 +64,11 @@ def render_login():
         email = request.form["email"].strip().lower()
         password = request.form["password"].strip()
         con = connect(DATABASE)
-        query = "SELECT id, password, f_name, l_name, type FROM users WHERE email = ?"
+        query = """SELECT id, password, f_name, l_name, type 
+        FROM users 
+        WHERE email = ?"""
         cur = con.cursor()
-        cur.execute(query, (email, ))
+        cur.execute(query, (email,))
         user_data = cur.fetchone()
         con.close()
         try:
@@ -101,7 +108,7 @@ def render_signup_page():
             return redirect("/signup?error=Passwords+do+not+match")
         hashed_password = bcrypt.generate_password_hash(password)
         con = connect(DATABASE)
-        query = "INSERT INTO users (f_name, l_name, email, password, type) VALUES (?, ?, ?, ?, ?)"
+        query = """INSERT INTO users (f_name, l_name, email, password, type) VALUES (?, ?, ?, ?, ?)"""
         cur = con.cursor()
         try:
             cur.execute(query, (f_name, l_name, email, hashed_password, account_type))
@@ -112,6 +119,22 @@ def render_signup_page():
         con.close()
         return redirect("/login")
     return render_template('signup.html')
+
+
+@app.route('/entry/<entry_id>')
+def render_entry(entry_id):
+    con = connect(DATABASE)
+    query = """SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, users.email, entries.date 
+    FROM entries 
+    INNER JOIN categories ON entries.category_id=categories.id 
+    INNER JOIN users ON entries.user_id=users.id
+    WHERE entries.id=?"""
+    cur = con.cursor()
+    cur.execute(query, (entry_id,))
+    entry_info = cur.fetchone()
+    con.close()
+    print(entry_info)
+    return render_template('entry.html', entry=entry_info)
 
 
 if __name__ == '__main__':
