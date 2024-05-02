@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, session
 import sqlite3
 from flask_bcrypt import Bcrypt
+import datetime
 
 DATABASE = "database.db"
 app = Flask(__name__)
@@ -124,7 +125,7 @@ def render_signup_page():
 @app.route('/entry/<entry_id>')
 def render_entry(entry_id):
     con = connect(DATABASE)
-    query = """SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, users.email, entries.date 
+    query = """SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date 
     FROM entries 
     INNER JOIN categories ON entries.category_id=categories.id 
     INNER JOIN users ON entries.user_id=users.id
