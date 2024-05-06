@@ -119,7 +119,7 @@ def render_signup_page():
         con.commit()
         con.close()
         return redirect("/login")
-    return render_template('signup.html')
+    return render_template('signup.html', errors=request.args.get("error"))
 
 
 @app.route('/entry/<entry_id>')
