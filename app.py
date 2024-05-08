@@ -3,13 +3,13 @@ import sqlite3
 from flask_bcrypt import Bcrypt
 import datetime
 
-DATABASE = "database.db"
+DATABASE = "database.db"  # file path to the database
 app = Flask(__name__)
-bcrypt = Bcrypt(app)
-app.secret_key = "kkjsdlrft5uew2wweruyeou9iweqriurrmionmu9buhybvt7tfrct5rxcerxsweqa2qa3was5etdc6rv67tgb8yyh98n9nm0imj0ijku9uh7vgb6t7f6fd56d54"
+bcrypt = Bcrypt(app)  # initialising bcrypt
+app.secret_key = "w3wkjdxdckiu-p[0;iliketoeatdogsandcats4[7uyhxnhjdcvgf"  # key used to secure session data
 
 
-def connect(db_file):
+def connect(db_file):  # creates a connection with the database
     try:
         connection = sqlite3.connect(db_file)
         return connection
@@ -31,7 +31,7 @@ def render_database():
     INNER JOIN categories ON entries.category_id=categories.id"""
     cur = con.cursor()
     cur.execute(query)
-    entry_list = cur.fetchall()
+    entry_list = cur.fetchall()  # fetch all the rows which matches the query
     query = "SELECT id, name FROM categories"
     cur = con.cursor()
     cur.execute(query)
