@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <title>Te Reo Dictionary | Home</title>
@@ -9,18 +8,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"/>
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 </head>
-
 <body>
+<!-- Navbar -->
 <nav>
     <div class="container">
         <div class="navbar-brand">Te Reo Dictionary</div>
         <div class="navbar-links">
             <a href="/">home</a>
             <a href="/database">database</a>
-            <a href="/login">login</a>
+            {% if session["user_id"] %}
+                <a href="/logout">logout</a>
+            {% else %}
+                <a href="/login">login</a>
+            {% endif %}
         </div>
     </div>
 </nav>
+<!-- Heading and page content -->
 <div class="container">
     <header>
         <h1>{% block pageheading %}{% endblock %}</h1>
@@ -31,6 +35,16 @@
         {% endblock %}
     </main>
 </div>
+<!-- Messages display -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, flash
 import sqlite3
 from flask_bcrypt import Bcrypt
 import datetime
@@ -90,6 +90,14 @@ def render_login():
         print(session)
         return redirect("/")
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    for key in list(session.keys()):  # empties the session
+        session.pop(key)
+    flash('You have successfully logged out.')
+    return redirect("/login")
 
 
 @app.route('/signup', methods=["POST", "GET"])

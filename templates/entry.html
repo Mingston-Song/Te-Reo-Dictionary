@@ -3,13 +3,13 @@
 {% block pageheading %}{{ entry[1] }}{% endblock %}
 
 {% block main %}
-        <div class="big-entry-box">
-                <p class="entry-box-heading"><strong>{{ entry[2] }}</strong></p>
-                <p class="entry-box-info">{{ entry[3] }}</p>
-                <p class="entry-box-info"><strong>{{ entry[5] }}</strong></p>
-                <p class="entry-box-info"><strong>Level </strong>{{ entry[4] }}</p>
-                <img class="entry-box-image" src="/static/images/{{ entry[6] }}">
-                <p class="entry-box-info"><strong>Uploaded by </strong>{{ entry[7] }} {{ entry[8] }}</p>
-                <p class="entry-box-info">{{ entry[9] }}</p>
-        </div>
+    <div class="big-entry-box">
+        <p class="entry-box-heading"><strong>{{ entry[2] }}</strong></p>
+        <p class="entry-box-info">{{ entry[3] }}</p>
+        <p class="entry-box-info"><strong>{{ entry[5] }}</strong></p>
+        <p class="entry-box-info"><strong>Level </strong>{{ entry[4] }}</p>
+        <img class="entry-box-image" src="/static/images/{{ entry[6] }}">
+        <p class="entry-box-info"><strong>Uploaded by </strong>{{ entry[7] }} {{ entry[8] }}</p>
+        <p class="entry-box-info">{{ entry[9] }}</p>
+    </div>
 {% endblock %}
