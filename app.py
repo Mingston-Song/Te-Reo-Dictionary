@@ -29,6 +29,18 @@ def logged_in():  # checks whether you are logged in
         return False
 
 
+@app.context_processor
+def admin_context_processor():
+    return dict(admin=admin)
+
+
+def admin():
+    if logged_in() and session.get("type") == 1:
+        return True
+    else:
+        return False
+
+
 @app.route('/')
 def render_home():
     return render_template('home.html')
@@ -134,7 +146,7 @@ def render_signup_page():
             success = False
         hashed_password = bcrypt.generate_password_hash(password)
         con = connect(DATABASE)
-        query = """INSERT INTO users (f_name, l_name, email, password, type) VALUES (?, ?, ?, ?, ?)"""
+        query = "INSERT INTO users (f_name, l_name, email, password, type) VALUES (?, ?, ?, ?, ?)"
         cur = con.cursor()
         try:
             cur.execute(query, (f_name, l_name, email, hashed_password, account_type))
@@ -142,30 +154,74 @@ def render_signup_page():
             con.close()
             flash("Email is already used")
             success = False
-        if success == True:
+        if success:
             con.commit()
             con.close()
             return redirect("/login")
         else:
             con.close()
             return redirect("/signup")
-    return render_template('signup.html', errors=request.args.get("error"))
+    return render_template('signup.html')
 
 
 @app.route('/entry/<entry_id>')
 def render_entry(entry_id):
     con = connect(DATABASE)
-    query = """SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date 
-    FROM entries 
-    INNER JOIN categories ON entries.category_id=categories.id 
-    INNER JOIN users ON entries.user_id=users.id
-    WHERE entries.id=?"""
+    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date " \
+            "FROM entries " \
+            "INNER JOIN categories ON entries.category_id=categories.id " \
+            "INNER JOIN users ON entries.user_id=users.id " \
+            "WHERE entries.id=?"
     cur = con.cursor()
     cur.execute(query, (entry_id,))
     entry_info = cur.fetchone()
     con.close()
     print(entry_info)
     return render_template('entry.html', entry=entry_info)
+
+
+@app.route('/admin', methods=["POST", "GET"])
+def render_admin_page():
+    if not logged_in():
+        flash("You must be logged in")
+        return redirect("/")
+    if request.method == "POST":
+        success = True
+        print(request.form)
+        f_name = request.form.get("f_name").title().strip()
+        l_name = request.form.get("l_name").title().strip()
+        email = request.form.get("email").lower().strip()
+        password = request.form.get("password")
+        password2 = request.form.get("password2")
+        teacher = request.form.get("type")
+        if teacher == 'on':
+            account_type = 1
+        else:
+            account_type = 0
+        if password != password2:
+            flash("Passwords do not match")
+            success = False
+        if len(password) < 8:
+            flash("Password must be at least 8 characters")
+            success = False
+        hashed_password = bcrypt.generate_password_hash(password)
+        con = connect(DATABASE)
+        query = "INSERT INTO users (f_name, l_name, email, password, type) VALUES (?, ?, ?, ?, ?)"
+        cur = con.cursor()
+        try:
+            cur.execute(query, (f_name, l_name, email, hashed_password, account_type))
+        except sqlite3.IntegrityError:
+            con.close()
+            flash("Email is already used")
+            success = False
+        if success:
+            con.commit()
+            con.close()
+            return redirect("/login")
+        else:
+            con.close()
+            return redirect("/signup")
+    return render_template('signup.html')
 
 
 if __name__ == '__main__':
