@@ -17,6 +17,17 @@ def connect(db_file):  # creates a connection with the database
         print(e)
     return None
 
+@app.context_processor
+def login_context_processor():  # jinja context processor to check if you are logged in
+    return dict(logged_in=logged_in)  # calls the logged_in function to jinja
+
+
+def logged_in():  # checks whether you are logged in
+    if session.get("email"):  # if email exists in session tuple
+        return True
+    else:
+        return False
+
 
 @app.route('/')
 def render_home():
@@ -103,6 +114,7 @@ def logout():
 @app.route('/signup', methods=["POST", "GET"])
 def render_signup_page():
     if request.method == "POST":
+        success = True
         print(request.form)
         f_name = request.form.get("f_name").title().strip()
         l_name = request.form.get("l_name").title().strip()
@@ -110,11 +122,16 @@ def render_signup_page():
         password = request.form.get("password")
         password2 = request.form.get("password2")
         teacher = request.form.get("type")
-        account_type = 0
         if teacher == 'on':
             account_type = 1
+        else:
+            account_type = 0
         if password != password2:
-            return redirect("/signup?error=Passwords+do+not+match")
+            flash("Passwords do not match")
+            success = False
+        if len(password) < 8:
+            flash("Password must be at least 8 characters")
+            success = False
         hashed_password = bcrypt.generate_password_hash(password)
         con = connect(DATABASE)
         query = """INSERT INTO users (f_name, l_name, email, password, type) VALUES (?, ?, ?, ?, ?)"""
@@ -123,10 +140,15 @@ def render_signup_page():
             cur.execute(query, (f_name, l_name, email, hashed_password, account_type))
         except sqlite3.IntegrityError:
             con.close()
-            return redirect("/signup?error=Email+is+already+used")
-        con.commit()
-        con.close()
-        return redirect("/login")
+            flash("Email is already used")
+            success = False
+        if success == True:
+            con.commit()
+            con.close()
+            return redirect("/login")
+        else:
+            con.close()
+            return redirect("/signup")
     return render_template('signup.html', errors=request.args.get("error"))
 
 
