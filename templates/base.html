@@ -21,6 +21,9 @@
             {% else %}
                 <a href="/login">login</a>
             {% endif %}
+            {% if is_admin() %}
+                <a href="/admin">admin</a>
+            {% endif %}
         </div>
     </div>
 </nav>
@@ -34,17 +37,18 @@
         {% block main %}
         {% endblock %}
     </main>
+
+    <!-- Messages display -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 </div>
-<!-- Messages display -->
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul class=flashes>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
 </body>
 
 </html>
