@@ -100,6 +100,8 @@ def render_search_type_mythicals():
 
 @app.route('/login', methods=["POST", "GET"])
 def render_login():
+    if logged_in():
+        return redirect("/")
     if request.method == "POST":
         email = request.form["email"].strip().lower()
         password = request.form["password"].strip()
@@ -141,6 +143,8 @@ def logout():
 
 @app.route('/signup', methods=["POST", "GET"])
 def render_signup_page():
+    if logged_in():
+        return redirect("/")
     if request.method == "POST":
         success = True
         print(request.form)
@@ -213,14 +217,16 @@ def render_admin_page():
         maori = request.form.get("maori").lower().strip()
         english = request.form.get("english").lower().strip()
         definition = request.form.get("definition").capitalize().strip()
+        if definition == '':
+            definition = None
         level = request.form.get("level")
-        category_id = request.form.get("password2")
+        category_id = request.form.get("category")
         user_id = session.get("user_id")
         con = connect(DATABASE)
         query = "INSERT INTO entries (maori, english, definition, level, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)"
         cur = con.cursor()
         try:
-            cur.execute(query, (maori, english, definition, level, category_id, user_id))
+            cur.execute(query, (maori, english, definition, int(level), int(category_id), int(user_id)))
         except sqlite3.IntegrityError:
             con.close()
             flash("Failed to add new entry. Please check that the data you've entered meets the requirements.")
