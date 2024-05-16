@@ -46,6 +46,11 @@ def render_home():
     return render_template('home.html')
 
 
+@app.route('/no_results')
+def render_no_results():
+    return render_template('no_results.html')
+
+
 @app.route('/database')
 def render_database():
     con = connect(DATABASE)
@@ -79,23 +84,29 @@ def render_database_categories(category_id):
     cur.execute(query)
     category_list = cur.fetchall()
     con.close()
-    return render_template('database.html', entries=entry_list, categories=category_list)
+    if len(entry_list) == 0:
+        return redirect("/no_results")
+    else:
+        return render_template('database.html', entries=entry_list, categories=category_list)
 
 
-@app.route('/search_type_mythicals', methods=['GET', 'Post'])
-def render_search_type_mythicals():
-    search = request.form['type_search']
-    query = "(Type LIKE ? or Second_Type LIKE ?)"
+@app.route('/search', methods=['GET', 'Post'])
+def render_search():
+    search = request.form['search']
+    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name " \
+            "FROM entries " \
+            "INNER JOIN categories ON entries.category_id=categories.id " \
+            "WHERE (entries.maori LIKE ? or entries.english LIKE ? or entries.level LIKE ?)"
     search = "%" + search + "%"
     con = connect(DATABASE)
     cur = con.cursor()
-    cur.execute(query, (search, search))
-    tag_list = cur.fetchall()
+    cur.execute(query, (search, search, search))
+    entry_list = cur.fetchall()
     con.close()
-    if len(tag_list) == 0:
+    if len(entry_list) == 0:
         return redirect("/no_results")
     else:
-        return render_template("mythicals.html", tags=tag_list)
+        return render_template("database.html", entries=entry_list)
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -217,12 +228,12 @@ def render_admin_page():
         maori = request.form.get("maori").lower().strip()
         english = request.form.get("english").lower().strip()
         definition = request.form.get("definition").capitalize().strip()
-        if definition == '':
-            definition = None
         level = request.form.get("level")
         category_id = request.form.get("category")
         user_id = session.get("user_id")
         con = connect(DATABASE)
+        if definition == '':
+            definition = 'Pending'
         query = "INSERT INTO entries (maori, english, definition, level, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)"
         cur = con.cursor()
         try:

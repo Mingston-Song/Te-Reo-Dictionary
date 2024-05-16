@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block pageheading %}Confirm Delete{% endblock %}
+
+{% block main %}
+    <h3>Are you sure you want to delete entry <strong>{{ name }}</strong>?
+        <a href="/delete_confirm_entry/{{ id }}">Confirm</a>
+        <a href="/entry/{{ id }}">Cancel</a>
+    </h3>
+{% endblock %}

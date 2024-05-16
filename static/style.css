@@ -60,6 +60,11 @@ h4 {
     margin: 0 0 0 0;
 }
 
+.return-button {
+    margin-top: 2rem;
+    text-align: center;
+}
+
 nav {
     background-color: var(--black);
     text-align: center;
@@ -111,6 +116,7 @@ a .entry {
 }
 
 .big-entry-box {
+    text-align: center;
     width: 100%;
     background: var(--white);
     border: 0 solid var(--gray);
