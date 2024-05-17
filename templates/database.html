@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 
-{% block pageheading %}Database{% endblock %}
+{% block pageheading %}
+    {% if id == -1 %}
+        database
+    {% else %}
+        {{ categories[id-1][1] }}
+    {% endif %}
+{% endblock %}
 
 {% block main %}
     <div class="filters">
         <div class="dropdown">
-            <button class="dropbtn">Categories<i class="fa fa-caret-down"></i></button>
+            <button class="dropdown-button">Categories<i class="fa fa-caret-down"></i></button>
             <div class="dropdown-content">
+                <a href="/database/-1">all</a>
                 {% for category in categories %}
                     <a href="/database/{{ category[0] }}">{{ category[1] }}</a>
                 {% endfor %}

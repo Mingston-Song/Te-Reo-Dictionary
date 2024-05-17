@@ -4,7 +4,7 @@
 
 {% block main %}
 <h4>Add an entry</h4>
-<form class="myform" method="POST">
+<form class="myform" method="POST" action="/add_entry">
     <div class="form-group">
         <div class="form-label">Word(Maori):</div>
         <div class="form-element"><input type="text" name="maori" id="maori" required maxlength="85"></div>
@@ -15,11 +15,11 @@
     </div>
     <div class="form-group">
         <div class="form-label">Definition:</div>
-        <div class="form-element"><input type="text" name="definition" id="definition" maxlength="150"></div>
+        <div class="form-element"><input type="text" name="definition" id="definition" maxlength="300"></div>
     </div>
     <div class="form-group">
         <div class="form-label">Level:</div>
-        <div class="form-element"><input type="number" name="level" id="level" required width="1" min="0" max="10"></div>
+        <div class="form-element"><input type="number" name="level" id="level" required min="1" max="10"></div>
     </div>
     <div class="form-group">
         <div class="form-label">Category:</div>
@@ -33,8 +33,35 @@
     </div>
     <div class="form-group">
         <div class="form-label"></div>
-        <div class="form-element"><input type="submit" value="Submit"></div>
+        <div class="form-element"><input type="submit" value="Add entry"></div>
     </div>
 </form>
 <h4>Add a category</h4>
+<form class="myform" method="POST" action="/add_category">
+    <div class="form-group">
+        <div class="form-label">Name:</div>
+        <div class="form-element"><input type="text" name="cat_name" id="cat_name" required maxlength="20"></div>
+    </div>
+    <div class="form-group">
+        <div class="form-label"></div>
+        <div class="form-element"><input type="submit" value="Add category"></div>
+    </div>
+</form>
+<h4>Delete a category</h4>
+<form class="myform" method="POST" action="/confirm_delete_category">
+    <div class="form-group">
+        <div class="form-label">Category:</div>
+        <div class="form-element">
+            <select id="cat_id" name="cat_id" required>
+                {% for category in categories %}
+                    <option value="{{ category[0] }}">{{ category[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="form-label"></div>
+        <div class="form-element"><input type="submit" value="Delete category"></div>
+    </div>
+</form>
 {% endblock %}

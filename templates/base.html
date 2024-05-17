@@ -15,7 +15,7 @@
         <div class="navbar-brand">Te Reo Dictionary</div>
         <div class="navbar-links">
             <a href="/">home</a>
-            <a href="/database">database</a>
+            <a href="/database/-1">database</a>
             {% if logged_in() %}
                 <a href="/logout">logout</a>
             {% else %}
@@ -48,6 +48,11 @@
             </ul>
         {% endif %}
     {% endwith %}
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="footer-notes"></div>
 </div>
 </body>
 

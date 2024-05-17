@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block pageheading %}delete category: {{ category[1] }}?{% endblock %}
+
+{% block main %}
+    <div class="big-entry-box">
+        <p class="entry-box-info"><strong>Uploaded by </strong>{{ category[2] }} {{ category[3] }}</p>
+        <p class="entry-box-info">{{ category[4] }}</p>
+        <h4>Are you sure you want to delete this category?</h4>
+        <h4>
+            <a href="/delete_category/{{ category[0] }}">Confirm </a>/
+            <a href="/admin"> Cancel</a>
+        </h4>
+    </div>
+{% endblock %}
