@@ -132,9 +132,9 @@ def render_login():
         password = request.form["password"].strip()
         con = connect(DATABASE)
         cur = con.cursor()
-        query = """SELECT id, password, f_name, l_name, type 
-        FROM users 
-        WHERE email = ?"""
+        query = "SELECT id, password, f_name, l_name, type " \
+                "FROM users " \
+                "WHERE email = ?"
         cur.execute(query, (email,))
         user_data = cur.fetchone()
         con.close()
