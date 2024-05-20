@@ -65,6 +65,12 @@ h4 {
     margin: 1rem 0 0 0;
 }
 
+.notes {
+    text-align: left;
+    color: #ff0000;
+    margin: 1rem 0 0 0;
+}
+
 .return-button {
     margin-top: 2rem;
     text-align: center;

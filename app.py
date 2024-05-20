@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 import datetime
 
 # E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db
-DATABASE = "E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db"  # file path to the database
+DATABASE = "database.db"  # file path to the database
 app = Flask(__name__)
 bcrypt = Bcrypt(app)  # initialising bcrypt
 app.secret_key = "w3wkjdxdckiu-p[0;iliketoeatdogsandcats4[7uyhxnhjdcvgf"  # key used to secure session data
@@ -118,6 +118,8 @@ def render_entry(entry_id):
     cur = con.cursor()
     cur.execute(query, (entry_id,))
     entry_info = cur.fetchone()
+    if not entry_info:
+        return redirect("/no_results")
     con.close()
     print(entry_info)
     return render_template('entry.html', entry=entry_info)
@@ -277,15 +279,18 @@ def render_confirm_delete_entry_page(entry_id):
     if not is_admin():
         return redirect("/")
     con = connect(DATABASE)
-    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date " \
+    cur = con.cursor()
+    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date, users.id " \
             "FROM entries " \
             "INNER JOIN categories ON entries.category_id=categories.id " \
             "INNER JOIN users ON entries.user_id=users.id " \
             "WHERE entries.id=?"
-    cur = con.cursor()
     cur.execute(query, (entry_id,))
     entry_info = cur.fetchone()
     con.close()
+    if int(entry_info[10]) == 1:
+        flash("You cannot delete a default entry.")
+        return redirect("/")
     return render_template('confirm_delete_entry.html', entry=entry_info)
 
 
@@ -297,7 +302,7 @@ def render_confirm_delete_category_page():
         print(request.form)
         category_id = request.form.get("cat_id")
     con = connect(DATABASE)
-    query = "SELECT categories.id, categories.name, users.f_name, users.l_name, categories.date " \
+    query = "SELECT categories.id, categories.name, users.f_name, users.l_name, categories.date, users.id " \
             "FROM categories " \
             "INNER JOIN users ON categories.user_id=users.id " \
             "WHERE categories.id=?"
@@ -305,6 +310,9 @@ def render_confirm_delete_category_page():
     cur.execute(query, (category_id,))
     category_info = cur.fetchone()
     con.close()
+    if int(category_info[5]) == 1:
+        flash("You cannot delete a default category.")
+        return redirect("/admin")
     return render_template('confirm_delete_category.html', category=category_info)
 
 
@@ -314,6 +322,22 @@ def delete_entry(entry_id):
         return redirect("/")
     else:
         con = connect(DATABASE)
+        cur = con.cursor()
+        query = "SELECT id " \
+                "FROM entries " \
+                "WHERE id=?"
+        cur.execute(query, (entry_id,))
+        if not cur.fetchone():
+            flash("This entry doesn't exist.")
+            return redirect("/")
+        query = "SELECT user_id " \
+                "FROM entries " \
+                "WHERE id=?"
+        cur.execute(query, (entry_id,))
+        user_id = cur.fetchone()
+        if int(user_id[0]) == 1:
+            flash("You cannot delete a default entry.")
+            return redirect("/")
         query = "DELETE FROM entries " \
                 "WHERE entries.id=?"
         cur = con.cursor()
@@ -330,9 +354,24 @@ def delete_category(category_id):
         return redirect("/")
     else:
         con = connect(DATABASE)
+        cur = con.cursor()
+        query = "SELECT id " \
+                "FROM categories " \
+                "WHERE id=?"
+        cur.execute(query, (category_id,))
+        if not cur.fetchone():
+            flash("This category doesn't exist.")
+            return redirect("/")
+        query = "SELECT user_id " \
+                "FROM categories " \
+                "WHERE id=?"
+        cur.execute(query, (category_id,))
+        user_id = cur.fetchone()
+        if int(user_id[0]) == 1:
+            flash("You cannot delete a default category.")
+            return redirect("/")
         query = "DELETE FROM categories " \
                 "WHERE categories.id=?"
-        cur = con.cursor()
         cur.execute(query, (category_id,))
         con.commit()
         con.close()
