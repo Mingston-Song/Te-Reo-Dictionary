@@ -4,4 +4,18 @@
 
 {% block main %}
     <strong><p>Welcome to Te Reo Dictionary!</p></strong>
+    <strong><p>Nau mai haere mai ki Te Papakupu Te Reo!</p></strong>
+    <br>
+    {% if is_admin() %}
+        <p>You are logged in. Enjoy!</p>
+        <p>Head over to <a href="/database/-1">the database</a> to delete entries.</p>
+        <p>Head over to <a href="/admin">admin</a> to add entries and add and delete categories.</p>
+    {% elif logged_in() %}
+        <p>You are logged in. Enjoy!</p>
+        <p><a href="/database/-1">Check out the database</a>.</p>
+    {% else %}
+        <p>If you are a student, feel free to <a href="/database/-1">check out the database</a>.
+            If you are a teacher, <a href="/signup">sign up</a> or <a href="/login">log in</a> to add or delete entries
+            and categories.</p>
+    {% endif %}
 {% endblock %}

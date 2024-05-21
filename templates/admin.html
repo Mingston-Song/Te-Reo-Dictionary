@@ -7,11 +7,11 @@
 <form class="myform" method="POST" action="/add_entry">
     <div class="form-group">
         <div class="form-label">Word(Maori):</div>
-        <div class="form-element"><input type="text" name="maori" id="maori" required maxlength="85"></div>
+        <div class="form-element"><input type="text" name="maori" id="maori" required maxlength="85" pattern="\s*(\S\s*){1,}"></div>
     </div>
     <div class="form-group">
         <div class="form-label">Word/phrase(English):</div>
-        <div class="form-element"><input type="text" name="english" id="english" required maxlength="40"></div>
+        <div class="form-element"><input type="text" name="english" id="english" required maxlength="40" pattern="\s*(\S\s*){1,}"></div>
     </div>
     <div class="form-group">
         <div class="form-label">Definition:</div>
@@ -44,7 +44,7 @@
 <form class="myform" method="POST" action="/add_category">
     <div class="form-group">
         <div class="form-label">Name:</div>
-        <div class="form-element"><input type="text" name="cat_name" id="cat_name" required maxlength="20"></div>
+        <div class="form-element"><input type="text" name="cat_name" id="cat_name" required maxlength="20" pattern="\s*(\S\s*){1,}"></div>
     </div>
     <div class="form-label">&#8203;</div>
     <p class="notes">*Please do not add a category that already exists.</p>
