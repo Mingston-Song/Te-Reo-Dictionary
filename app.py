@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 import datetime
 
 # E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db
-DATABASE = "E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db"  # file path to the database
+DATABASE = "database.db"  # file path to the database
 app = Flask(__name__)
 bcrypt = Bcrypt(app)  # initialising bcrypt
 app.secret_key = "w3wkjdxdckiup0i21like6785to30182eat5786982dogs1902858and1239842cats47uyhxnhjdcvgf"  # key used to secure session data
@@ -53,9 +53,12 @@ def render_no_results():  # page for no results
 
 
 @app.route('/database/<category_id>')
-def render_database_categories(category_id):  # renders the database page and its corresponding entries | input: id of the category filter
+def render_database_categories(category_id):
+    # renders the database page and its corresponding entries | input: id of the category filter
+    # inputs
+
     con = connect(DATABASE)  # begins database connection
-    cur = con.cursor()  # creates cursor object
+    cur = con.cursor()
     if category_id == '-1':  # if no category filter (database/-1 is the default page for showing all the entries as there will never be a category id of -1)
         query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name " \
                 "FROM entries " \
