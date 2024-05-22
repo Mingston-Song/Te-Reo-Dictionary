@@ -1,21 +1,27 @@
 {% extends "base.html" %}
 
-{% block pageheading %}Home{% endblock %}
+{% block pageheading %}home/kainga{% endblock %}
 
 {% block main %}
+    <div class="search-bar">
+        <form method="POST" action="/search">
+            <input type="text" placeholder="Search" name="search" id="search">
+            <button type="submit">Submit<i class="fa fa-search"></i></button>
+        </form>
+    </div>
     <strong><p>Welcome to Te Reo Dictionary!</p></strong>
     <strong><p>Nau mai haere mai ki Te Papakupu Te Reo!</p></strong>
     <br>
     {% if is_admin() %}
         <p>You are logged in. Enjoy!</p>
-        <p>Head over to <a href="/database/-1">the database</a> to delete entries.</p>
-        <p>Head over to <a href="/admin">admin</a> to add entries and add and delete categories.</p>
+        <p>Head over to <a href="/database/-1">the database</a> to delete words.</p>
+        <p>Head over to <a href="/admin">admin</a> to add words and add or delete categories.</p>
     {% elif logged_in() %}
         <p>You are logged in. Enjoy!</p>
-        <p><a href="/database/-1">Check out the database</a>.</p>
+        <p><a href="/database/-1">Check out the dictionary</a>.</p>
     {% else %}
-        <p>If you are a student, feel free to <a href="/database/-1">check out the database</a>.
-            If you are a teacher, <a href="/signup">sign up</a> or <a href="/login">log in</a> to add or delete entries
+        <p>If you are a student, feel free to <a href="/database/-1">use the dictionary</a>.
+            If you are a teacher, <a href="/signup">sign up</a> or <a href="/login">log in</a> to add or delete words
             and categories.</p>
     {% endif %}
 {% endblock %}

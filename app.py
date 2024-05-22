@@ -129,7 +129,7 @@ def render_login():  # renders the login page
         return redirect("/")  # output: redirect to home
     if request.method == "POST":  # if an html form which uses the method "POST" and action "/login" is sent
         email = request.form["email"].strip().lower()  # emails are not case-sensitive so are stored in lowercase. any spaces before and after which should not be recorded are removed using strip
-        password = request.form["password"].strip()  # passwords should be stripped as bycrypt hashing ignores spaces before and trailing
+        password = request.form["password"]  # passwords should be stripped as bycrypt hashing ignores spaces before and trailing
         con = connect(DATABASE)
         cur = con.cursor()
         query = "SELECT id, password, f_name, l_name, type " \
@@ -178,16 +178,9 @@ def render_signup_page():
         email = request.form.get("email").lower().strip()
         password = request.form.get("password")
         password2 = request.form.get("password2")
-        teacher = request.form.get("type")
-        if teacher == 'on':
-            account_type = 1
-        else:
-            account_type = 0
+        account_type = request.form.get("type")
         if password != password2:
             flash("Passwords do not match.")
-            return redirect("/signup")
-        if len(password) < 8:
-            flash("Password must be at least 8 characters.")
             return redirect("/signup")
         hashed_password = bcrypt.generate_password_hash(password)
         con = connect(DATABASE)

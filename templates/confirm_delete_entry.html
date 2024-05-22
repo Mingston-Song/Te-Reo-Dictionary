@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block pageheading %}delete entry: {{ entry[1] }}?{% endblock %}
+{% block pageheading %}delete word: {{ entry[1] }}?{% endblock %}
 
 {% block main %}
     <div class="big-entry-box">
@@ -11,7 +11,7 @@
         <img class="entry-box-image" src="/static/images/{{ entry[6] }}">
         <p class="entry-box-info"><strong>Uploaded by </strong>{{ entry[7] }} {{ entry[8] }}</p>
         <p class="entry-box-info">{{ entry[9] }}</p>
-        <h4>Are you sure you want to delete this entry?</h4>
+        <h4>Are you sure you want to delete this word?</h4>
         <h4>
             <a href="/delete_entry/{{ entry[0] }}">Confirm </a>/
             <a href="/entry/{{ entry[0] }}"> Cancel</a>

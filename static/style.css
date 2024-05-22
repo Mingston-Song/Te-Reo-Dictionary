@@ -83,6 +83,7 @@ nav {
     padding-top: 1rem;
     padding-bottom: 1rem;
     color: var(--red);
+    width: 100vw;
 }
 
 .navbar-brand {
@@ -221,7 +222,8 @@ table {
 }
 
 .search-bar {
-    float: right;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 @media only screen and (max-width: 600px) {

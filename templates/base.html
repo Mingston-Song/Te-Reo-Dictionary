@@ -14,15 +14,15 @@
     <div class="container">
         <div class="navbar-brand">Te Reo Dictionary</div>
         <div class="navbar-links">
-            <a href="/">home</a>
-            <a href="/database/-1">database</a>
+            <a href="/">home/kainga</a>
+            <a href="/database/-1">words/kupu</a>
             {% if logged_in() %}
-                <a href="/logout">logout</a>
+                <a href="/logout">logout/takiputa</a>
             {% else %}
-                <a href="/login">login</a>
+                <a href="/login">login/takiuru</a>
             {% endif %}
             {% if is_admin() %}
-                <a href="/admin">admin</a>
+                <a href="/admin">admin/whakahaere</a>
             {% endif %}
         </div>
     </div>

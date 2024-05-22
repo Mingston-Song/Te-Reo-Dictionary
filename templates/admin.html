@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block pageheading %}add word/category{% endblock %}
+{% block pageheading %}admin/whakahaere{% endblock %}
 
 {% block main %}
-<h4>Add an entry</h4>
+<h4>Add a word/Tāpirihia ngā kupu</h4>
 <form class="myform" method="POST" action="/add_entry">
     <div class="form-group">
         <div class="form-label">Word(Maori):</div>
@@ -37,7 +37,7 @@
     <p class="notes">*Your name will be displayed with this entry.</p>
     <div class="form-group">
         <div class="form-label"></div>
-        <div class="form-element"><input type="submit" value="Add entry"></div>
+        <div class="form-element"><input type="submit" value="Add word"></div>
     </div>
 </form>
 <h4>Add a category</h4>
