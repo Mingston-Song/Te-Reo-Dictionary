@@ -5,15 +5,22 @@
 {% block main %}
     <div class="big-entry-box">
         <p class="entry-box-heading"><strong>{{ entry[2] }}</strong></p>
+        <!-- maori -->
         <p class="entry-box-info">{{ entry[3] }}</p>
+        <!-- english -->
         <p class="entry-box-info"><strong>{{ entry[5] }}</strong></p>
+        <!-- category -->
         <p class="entry-box-info"><strong>Level </strong>{{ entry[4] }}</p>
+        <!-- level -->
         <img class="entry-box-image" src="/static/images/{{ entry[6] }}">
+        <!-- image -->
         <p class="entry-box-info"><strong>Uploaded by </strong>{{ entry[7] }} {{ entry[8] }}</p>
+        <!-- creator first and last name -->
         <p class="entry-box-info">{{ entry[9] }}</p>
+        <!-- date added -->
         {% if is_admin() %}
-            <h4><a href="/confirm_delete_entry/{{ entry[0] }}">Delete entry</a></h4>
+            <h4><a href="/confirm_delete_entry/{{ entry[0] }}">Delete entry/Muku te kupu</a></h4>
         {% endif %}
-        <h4><a href="/database/-1">Return to database</a></h4>
+        <h4><a href="/database/-1">Return to database/Kia hoki atu</a></h4>
     </div>
 {% endblock %}

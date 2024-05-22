@@ -2,16 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Te Reo Dictionary | Home</title>
+    <title>Te Reo Dictionary</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"/>
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 </head>
 <body>
-<!-- Navbar -->
 <nav>
-    <div class="container">
+    <div class="container-nav">
         <div class="navbar-brand">Te Reo Dictionary</div>
         <div class="navbar-links">
             <a href="/">home/kainga</a>
@@ -27,19 +26,16 @@
         </div>
     </div>
 </nav>
-<!-- Heading and page content -->
 <div class="container">
     <header>
         <h1>{% block pageheading %}{% endblock %}</h1>
     </header>
-
     <main>
         {% block main %}
         {% endblock %}
     </main>
-
-    <!-- Messages display -->
     {% with messages = get_flashed_messages() %}
+        <!-- Flask flashes messages display -->
         {% if messages %}
             <ul class=flashes>
                 {% for message in messages %}
@@ -49,7 +45,5 @@
         {% endif %}
     {% endwith %}
 </div>
-
 </body>
-
 </html>

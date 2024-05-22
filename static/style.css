@@ -20,13 +20,25 @@ header {
     word-wrap: break-word;
 }
 
-body {
+html, body {
     background-color: var(--light-gray);
+    overflow-x: hidden;
 }
 
 .container {
     width: 70vw;
     margin: auto;
+}
+
+.container-nav {
+    width: 80vw;
+    margin: auto
+}
+
+.container-nav::after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
 .container::after {

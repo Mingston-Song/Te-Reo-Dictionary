@@ -3,20 +3,21 @@
 {% block pageheading %}login/takiuru{% endblock %}
 
 {% block main %}
-<form class="myform" method="POST">
-    <div class="form-group">
-        <div class="form-label">Email:</div>
-        <div class="form-element"><input type="email" name="email" required maxlength="320"></div>
-    </div>
-    <div class="form-group">
-        <div class="form-label">Password:</div>
-        <div class="form-element"><input type="password" name="password" required></div>  <!-- There has been accounts registered before the minimum of 8 characters (not spaces) restrictions -->
-    </div>
-    <div class="form-group">
-        <div class="form-label"></div>
-        <div class="form-element"><input type="submit" value="Login"></div>
-    </div>
-<p><br><br><br>No account? <a href="/signup">Sign up!/rēhita!</a></p>
-</form>
+    <form class="myform" method="POST">
+        <div class="form-group">
+            <div class="form-label">Email/Īmēra:</div>
+            <div class="form-element"><input type="email" name="email" required maxlength="320"></div>
+        </div>
+        <div class="form-group">
+            <div class="form-label">Password/Kupu Muna:</div>
+            <div class="form-element"><input type="password" name="password" required></div>
+            <!-- There has been accounts registered before the minimum of 8 characters (not spaces) restrictions -->
+        </div>
+        <div class="form-group">
+            <div class="form-label"></div>
+            <div class="form-element"><input type="submit" value="Login"></div>
+        </div>
+        <p><br><br><br>No account? <a href="/signup">Sign up!/Rēhita!</a></p>
+    </form>
 
 {% endblock %}

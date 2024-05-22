@@ -3,71 +3,81 @@
 {% block pageheading %}admin/whakahaere{% endblock %}
 
 {% block main %}
-<h4>Add a word/Tāpirihia ngā kupu</h4>
-<form class="myform" method="POST" action="/add_entry">
-    <div class="form-group">
-        <div class="form-label">Word(Maori):</div>
-        <div class="form-element"><input type="text" name="maori" id="maori" required maxlength="85" pattern="\s*(\S\s*){1,}"></div>
-    </div>
-    <div class="form-group">
-        <div class="form-label">Word/phrase(English):</div>
-        <div class="form-element"><input type="text" name="english" id="english" required maxlength="40" pattern="\s*(\S\s*){1,}"></div>
-    </div>
-    <div class="form-group">
-        <div class="form-label">Definition:</div>
-        <div class="form-element"><input type="text" name="definition" id="definition" maxlength="300"></div>
-    </div>
-    <div class="form-label">&#8203;</div>
-    <p class="notes">*Not required.</p>
-    <div class="form-group">
-        <div class="form-label">Level:</div>
-        <div class="form-element"><input type="number" name="level" id="level" required min="1" max="10" placeholder="1-10"></div>
-    </div>
-    <div class="form-group">
-        <div class="form-label">Category:</div>
-        <div class="form-element">
-            <select id="category" name="category" required>
-                {% for category in categories %}
-                    <option value="{{ category[0] }}">{{ category[1] }}</option>
-                {% endfor %}
-            </select>
+    <h4>Add a word/Tāpirihia ngā kupu</h4>
+    <form class="myform" method="POST" action="/add_entry">
+        <div class="form-group">
+            <div class="form-label">Maori/Te Reo Māori:</div>
+            <div class="form-element"><input type="text" name="maori" id="maori" required maxlength="85"
+                                             pattern="\s*(\S\s*){1,}"></div>
+            <!-- requires at least one non-space character -->
         </div>
-    </div>
-    <div class="form-label">&#8203;</div>
-    <p class="notes">*Your name will be displayed with this entry.</p>
-    <div class="form-group">
-        <div class="form-label"></div>
-        <div class="form-element"><input type="submit" value="Add word"></div>
-    </div>
-</form>
-<h4>Add a category</h4>
-<form class="myform" method="POST" action="/add_category">
-    <div class="form-group">
-        <div class="form-label">Name:</div>
-        <div class="form-element"><input type="text" name="cat_name" id="cat_name" required maxlength="20" pattern="\s*(\S\s*){1,}"></div>
-    </div>
-    <div class="form-label">&#8203;</div>
-    <p class="notes">*Please do not add a category that already exists.</p>
-    <div class="form-group">
-        <div class="form-label"></div>
-        <div class="form-element"><input type="submit" value="Add category"></div>
-    </div>
-</form>
-<h4>Delete a category</h4>
-<form class="myform" method="POST" action="/confirm_delete_category">
-    <div class="form-group">
-        <div class="form-label">Category:</div>
-        <div class="form-element">
-            <select id="cat_id" name="cat_id" required>
-                {% for category in categories %}
-                    <option value="{{ category[0] }}">{{ category[1] }}</option>
-                {% endfor %}
-            </select>
+        <div class="form-group">
+            <div class="form-label">English/Te Reo Pākehā:</div>
+            <div class="form-element"><input type="text" name="english" id="english" required maxlength="40"
+                                             pattern="\s*(\S\s*){1,}"></div>
+            <!-- requires at least one non-space character -->
         </div>
-    </div>
-    <div class="form-group">
-        <div class="form-label"></div>
-        <div class="form-element"><input type="submit" value="Delete category"></div>
-    </div>
-</form>
+        <div class="form-group">
+            <div class="form-label">Definition/Whakamārama:</div>
+            <div class="form-element"><input type="text" name="definition" id="definition" maxlength="300"></div>
+        </div>
+        <div class="form-label">&#8203;</div> <!-- Space holder -->
+        <p class="notes">*Not required.</p>
+        <div class="form-group">
+            <div class="form-label">Level/Kōeke:</div>
+            <div class="form-element"><input type="number" name="level" id="level" required min="1" max="10"
+                                             placeholder="1-10"></div>
+        </div>
+        <div class="form-group">
+            <div class="form-label">Category/Rōpū:</div>
+            <div class="form-element">
+                <select id="category" name="category" required>
+                    {% for category in categories %}
+                        <option value="{{ category[0] }}">{{ category[1] }}</option>
+                        <!-- displays the name of the category but returns the id -->
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-label">&#8203;</div>
+        <p class="notes">*Your name will be displayed with this entry.</p>
+        <div class="form-group">
+            <div class="form-label"></div>
+            <div class="form-element"><input type="submit" value="Add word"></div>
+        </div>
+    </form>
+    <h4>Add a category/Tāpirihia ngā rōpū</h4>
+    <form class="myform" method="POST" action="/add_category">
+        <div class="form-group">
+            <div class="form-label">Name/Ingoa:</div>
+            <div class="form-element"><input type="text" name="cat_name" id="cat_name" required maxlength="20"
+                                             pattern="\s*(\S\s*){1,}"></div>
+            <!-- requires at least one non-space character -->
+        </div>
+        <div class="form-label">&#8203;</div>
+        <p class="notes">*Please do not add a category that already exists.</p>
+        <div class="form-group">
+            <div class="form-label"></div>
+            <div class="form-element"><input type="submit" value="Add category"></div>
+        </div>
+    </form>
+    <h4>Delete a category/Muku ngā rōpū</h4>
+    <form class="myform" method="POST" action="/confirm_delete_category/-1">
+        <!-- redirects to <category_id> = -1 to be handled further -->
+        <div class="form-group">
+            <div class="form-label">Category/Rōpū:</div>
+            <div class="form-element">
+                <select id="cat_id" name="cat_id" required>
+                    {% for category in categories %}
+                        <option value="{{ category[0] }}">{{ category[1] }}</option>
+                        <!-- Displays the name of the category but returns the id -->
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-label"></div>
+            <div class="form-element"><input type="submit" value="Delete category"></div>
+        </div>
+    </form>
 {% endblock %}

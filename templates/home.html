@@ -10,17 +10,18 @@
         </form>
     </div>
     <strong><p>Welcome to Te Reo Dictionary!</p></strong>
-    <strong><p>Nau mai haere mai ki Te Papakupu Te Reo!</p></strong>
+    <strong><p>Nau mai haere mai ki Te Papakupu Te Reo Māori!</p></strong>
     <br>
     {% if is_admin() %}
         <p>You are logged in. Enjoy!</p>
-        <p>Head over to <a href="/database/-1">the database</a> to delete words.</p>
-        <p>Head over to <a href="/admin">admin</a> to add words and add or delete categories.</p>
+        <p>Head over to <a href="/database/-1">the dictionary</a> to delete words.</p>
+        <p>Head over to <a href="/admin">admin</a> to add words, add categories, or delete categories.</p>
     {% elif logged_in() %}
         <p>You are logged in. Enjoy!</p>
         <p><a href="/database/-1">Check out the dictionary</a>.</p>
     {% else %}
-        <p>If you are a student, feel free to <a href="/database/-1">use the dictionary</a>.
+        <p>If you are a student, feel free to <a href="/signup">sign up</a> or <a href="/login">log in</a> or <a
+                href="/database/-1">use the dictionary</a>.
             If you are a teacher, <a href="/signup">sign up</a> or <a href="/login">log in</a> to add or delete words
             and categories.</p>
     {% endif %}

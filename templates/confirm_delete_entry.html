@@ -5,16 +5,23 @@
 {% block main %}
     <div class="big-entry-box">
         <p class="entry-box-heading"><strong>{{ entry[2] }}</strong></p>
+        <!-- maori -->
         <p class="entry-box-info">{{ entry[3] }}</p>
+        <!-- english -->
         <p class="entry-box-info"><strong>{{ entry[5] }}</strong></p>
+        <!-- category -->
         <p class="entry-box-info"><strong>Level </strong>{{ entry[4] }}</p>
+        <!-- level -->
         <img class="entry-box-image" src="/static/images/{{ entry[6] }}">
+        <!-- image -->
         <p class="entry-box-info"><strong>Uploaded by </strong>{{ entry[7] }} {{ entry[8] }}</p>
+        <!-- creator first and last name -->
         <p class="entry-box-info">{{ entry[9] }}</p>
+        <!-- date added -->
         <h4>Are you sure you want to delete this word?</h4>
         <h4>
-            <a href="/delete_entry/{{ entry[0] }}">Confirm </a>/
-            <a href="/entry/{{ entry[0] }}"> Cancel</a>
+            <a href="/delete_entry/{{ entry[0] }}">Confirm/Āe </a>&#8203;
+            <a href="/entry/{{ entry[0] }}"> Cancel/Kāo</a>
         </h4>
     </div>
 {% endblock %}

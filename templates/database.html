@@ -2,9 +2,11 @@
 
 {% block pageheading %}
     {% if id == -1 %}
+        <!-- if no category filter -->
         words/kupu
     {% else %}
         {{ categories[id-1][1] }}
+        <!-- displays the current category filter -->
     {% endif %}
 {% endblock %}
 
@@ -16,6 +18,7 @@
                 <a href="/database/-1">all</a>
                 {% for category in categories %}
                     <a href="/database/{{ category[0] }}">{{ category[1] }}</a>
+                    <!-- Displays the name of the category but returns the id -->
                 {% endfor %}
             </div>
         </div>
@@ -31,9 +34,13 @@
             <a href="/entry/{{ entry[0] }}">
                 <div class="entry-box">
                     <h3 class="entry-box-heading"><strong>{{ entry[1] }}</strong></h3>
+                    <!-- maori -->
                     <p class="entry-box-heading"><strong>({{ entry[5] }}) {{ entry[2] }}</strong></p>
+                    <!-- category & english -->
                     <p class="entry-box-info">{{ entry[3] }}</p>
+                    <!-- description -->
                     <p class="entry-box-info"><strong>Level </strong>{{ entry[4] }}</p>
+                    <!-- level -->
                 </div>
             </a>
         {% endfor %}
