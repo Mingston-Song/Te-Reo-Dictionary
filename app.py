@@ -3,7 +3,7 @@ import sqlite3
 from flask_bcrypt import Bcrypt
 
 # E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db
-DATABASE = "E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db"  # file path to the database
+DATABASE = "database.db"  # file path to the database
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.secret_key = "w3wkjdxdckiup0i21like6785to30182eat5786982dogs1902858and1239842cats47uyhxnhjdcvgf"
@@ -32,6 +32,7 @@ def logged_in_context_processor():
 
 def logged_in():
     # checks whether you are logged in by checking if user_id exists in session tuple
+    # inputs: user id
     # outputs: true or false
 
     if session.get("user_id"):
@@ -49,6 +50,7 @@ def is_admin_context_processor():
 
 def is_admin():
     # checks whether the user is an admin
+    # inputs: whether the user is logged in, account type
     # outputs: true or false
 
     if logged_in() and session.get("type") == 1:
@@ -67,6 +69,7 @@ def render_home():
 @app.route('/no_results')
 def render_no_results():
     # page for no results
+    # outputs: no results page
 
     return render_template('no_results.html')
 
@@ -74,8 +77,8 @@ def render_no_results():
 @app.route('/database/<category_id>')
 def render_database_categories(category_id):
     # renders the database page and its corresponding entries
-    # inputs: category being filtered
-    # outputs: no results page, database page
+    # inputs: id of category filter
+    # outputs: no results page, database page with list of entries, list of categories, id of category filter
 
     con = connect(DATABASE)
     cur = con.cursor()
@@ -115,7 +118,7 @@ def render_database_categories(category_id):
 def render_search():
     # renders the database with results from the searchbar
     # inputs: searchbar query
-    # outputs: no results page, database page
+    # outputs: no results page, database page with list of entries, list of categories, id of category filter
 
     search = "%" + request.form['search'] + "%"  # the % signs include anything with the query inside of it
     query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name " \
@@ -143,7 +146,7 @@ def render_search():
 def render_entry(entry_id):
     # renders entry indepth information page
     # inputs: id of the entry
-    # outputs: no results page, entry details page
+    # outputs: no results page, entry details page with information on the entry
 
     con = connect(DATABASE)
     cur = con.cursor()
@@ -165,7 +168,7 @@ def render_entry(entry_id):
 @app.route('/login', methods=["POST", "GET"])
 def render_login():
     # renders the login page and deals with login form details
-    # inputs: email, password
+    # inputs: logged in status, request method, email, password
     # outputs: login page, home redirect, messages, stores session details as a dict in cookies
 
     if logged_in():
@@ -192,9 +195,8 @@ def render_login():
         except TypeError:
             # if the user data is none, a type error will be returned, and it means there is no user with a matching
             # email
-            flash(
-                'An account with this email does not exist.')  # uses flask's flash module to pass an error message to
-            # the html
+            flash('An account with this email does not exist.')
+            # uses flask's flash module to pass an error message to the html
             return redirect("/login")
         if not bcrypt.check_password_hash(hashed_password, password):
             # checks if the password does not match
@@ -213,6 +215,7 @@ def render_login():
 @app.route('/logout')
 def logout():
     # empties the session and redirects to login
+    # inputs: session keys
     # outputs: login redirect, messages, empties session dict
 
     for key in list(session.keys()):
@@ -224,9 +227,8 @@ def logout():
 @app.route('/signup', methods=["POST", "GET"])
 def render_signup_page():
     # renders the signup page and deals with signup form details
-    # inputs: first name, last name, email, password, confirm password, account type
+    # inputs: logged in status, first name, last name, email, password, confirm password, account type
     # outputs: signup page, home redirect, login redirect, messages,
-    # commits: first name, last name, email, hashed password, and account type into the users table
 
     if logged_in():
         return redirect("/")
@@ -259,10 +261,11 @@ def render_signup_page():
     return render_template('signup.html')
 
 
-@app.route('/admin', methods=["POST", "GET"])
+@app.route('/admin')
 def render_admin_page():
     # renders the admin page
-    # output: admin page
+    # inputs: admin status
+    # outputs: admin page with list of categories
 
     if not is_admin():
         return redirect("/")
@@ -279,46 +282,43 @@ def render_admin_page():
 
 @app.route('/add_entry', methods=["POST", "GET"])
 def add_entry():
-    # deals with adding an entry forms
-    # inputs: maori word, english word, definition, level, category id
+    # deals with add entry form
+    # inputs: admin status, maori word, english word, definition, level, category id, user id, request method
     # outputs: home redirect, admin page redirect, messages
-    # commits: maori word, english word, definition, level, category id, user id into entries table
 
     if not is_admin():
         return redirect("/")
-    else:
-        if request.method == "POST":
-            print(request.form)
-            maori = request.form.get("maori").lower().strip()
-            english = request.form.get("english").lower().strip()
-            definition = request.form.get("definition").capitalize().strip()
-            if definition == '':
-                definition = 'Pending'
-            level = request.form.get("level")
-            category_id = request.form.get("category")
-            user_id = session.get("user_id")
-            con = connect(DATABASE)
-            cur = con.cursor()
-            query = "INSERT INTO entries (maori, english, definition, level, category_id, user_id) " \
-                    "VALUES (?, ?, ?, ?, ?, ?)"
-            try:
-                cur.execute(query, (maori, english, definition, int(level), int(category_id), int(user_id)))
-            except sqlite3.IntegrityError:
-                con.close()
-                flash("Failed to add entry. Please check you have met all the requirements.")
-                return redirect("/admin")
-            con.commit()
+    if request.method == "POST":
+        print(request.form)
+        maori = request.form.get("maori").lower().strip()
+        english = request.form.get("english").lower().strip()
+        definition = request.form.get("definition").capitalize().strip()
+        if definition == '':
+            definition = 'Pending'
+        level = request.form.get("level")
+        category_id = request.form.get("category")
+        user_id = session.get("user_id")
+        con = connect(DATABASE)
+        cur = con.cursor()
+        query = "INSERT INTO entries (maori, english, definition, level, category_id, user_id) " \
+                "VALUES (?, ?, ?, ?, ?, ?)"
+        try:
+            cur.execute(query, (maori, english, definition, int(level), int(category_id), int(user_id)))
+        except sqlite3.IntegrityError:
             con.close()
-            flash("Your entry has been added.")
-            return redirect("/")
+            flash("Failed to add entry. Please check you have met all the requirements.")
+            return redirect("/admin")
+        con.commit()
+        con.close()
+        flash("Your entry has been added.")
+        return redirect("/")
 
 
 @app.route('/add_category', methods=["POST", "GET"])
 def add_category():
-    # deals with adding a category forms
-    # inputs: category name
+    # deals with add category form
+    # inputs: admin status, category name, user id, request method
     # outputs: messages, home redirect, admin redirect
-    # commits: category name, user id into categories table
 
     if not is_admin():
         return redirect("/")
@@ -346,8 +346,8 @@ def add_category():
 @app.route('/confirm_delete_entry/<entry_id>')
 def render_confirm_delete_entry_page(entry_id):
     # renders delete entry confirmation page
-    # inputs: entry id
-    # outputs: confirmation page, messages, home redirect
+    # inputs: admin status, id of entry being deleted
+    # outputs: confirmation page with info on the entry, messages, home redirect
 
     if not is_admin():
         return redirect("/")
@@ -372,16 +372,16 @@ def render_confirm_delete_entry_page(entry_id):
 @app.route('/confirm_delete_category/<category_id>', methods=["POST", "GET"])
 def render_confirm_delete_category_page(category_id):
     # renders delete category confirmation page
-    # inputs: category id
-    # outputs: confirmation page, messages, home redirect, admin redirect
+    # inputs: admin status, id of category being deleted, request method
+    # outputs: confirmation page with info on the category, messages, home redirect, admin redirect
 
     if not is_admin():
         return redirect("/")
     if request.method == "POST":
         # if the user has submitted a delete category form the default url is <category_id> = -1
         print(request.form)
-        return redirect(
-            f'/confirm_delete_category/{request.form.get("cat_id")}')  # redirects to url with right cateogry id
+        return redirect(f'/confirm_delete_category/{request.form.get("cat_id")}')
+        # redirects to url with right cateogry id
     con = connect(DATABASE)
     cur = con.cursor()
     query = "SELECT categories.id, categories.name, users.f_name, users.l_name, categories.date, users.id " \
@@ -411,7 +411,7 @@ def render_confirm_delete_category_page(category_id):
 @app.route('/delete_entry/<entry_id>')
 def delete_entry(entry_id):
     # deletes an entry
-    # inputs: entry id
+    # inputs: admin status, id of entry being deleted
     # outputs: home redirect, messages
 
     if not is_admin():
@@ -447,7 +447,7 @@ def delete_entry(entry_id):
 @app.route('/delete_category/<category_id>')
 def delete_category(category_id):
     # deletes a category
-    # inputs: category id
+    # inputs: id of category being deleted, admin status
     # outputs: home redirect, messages
 
     if not is_admin():
