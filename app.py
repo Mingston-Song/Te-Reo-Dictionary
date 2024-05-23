@@ -6,7 +6,8 @@ from flask_bcrypt import Bcrypt
 DATABASE = "E:/Min/School Work/DTS/Te-Reo-Dictionary/database.db"  # file path to the database
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.secret_key = "w3wkjdxdckiup0i21like6785to30182eat5786982dogs1902858and1239842cats47uyhxnhjdcvgf"  # key used to secure session data
+app.secret_key = "w3wkjdxdckiup0i21like6785to30182eat5786982dogs1902858and1239842cats47uyhxnhjdcvgf"
+# key used to secure session data
 
 
 def connect(db_file):
@@ -20,6 +21,7 @@ def connect(db_file):
     except sqlite3.Error as e:
         print(e)
     return None
+
 
 @app.context_processor
 def logged_in_context_processor():
@@ -78,20 +80,23 @@ def render_database_categories(category_id):
     con = connect(DATABASE)
     cur = con.cursor()
     if category_id == '-1':
-        # if no category filter (-1 is the default id for showing all the entries as there will never be a category id of -1)
-        query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name " \
+        # if no category filter (-1 is the default id for showing all the entries as there will never be a category id
+        # of -1)
+        query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, " \
+                "categories.name " \
                 "FROM entries " \
                 "INNER JOIN categories ON entries.category_id=categories.id " \
                 "ORDER BY entries.date DESC "
         cur.execute(query)
     else:
         # if a category filter is in effect
-        query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name " \
+        query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, " \
+                "categories.name " \
                 "FROM entries " \
                 "INNER JOIN categories ON entries.category_id=categories.id " \
-                "WHERE category_id=? "\
+                "WHERE category_id=? " \
                 "ORDER BY entries.date DESC "
-        cur.execute(query, (category_id, ))
+        cur.execute(query, (category_id,))
     entry_list = cur.fetchall()  # stores information on all the entries that will be displayed
     query = "SELECT id, name " \
             "FROM categories " \
@@ -142,7 +147,8 @@ def render_entry(entry_id):
 
     con = connect(DATABASE)
     cur = con.cursor()
-    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date " \
+    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, " \
+            "entries.image, users.f_name, users.l_name, entries.date " \
             "FROM entries " \
             "INNER JOIN categories ON entries.category_id=categories.id " \
             "INNER JOIN users ON entries.user_id=users.id " \
@@ -184,8 +190,11 @@ def render_login():
             l_name = user_data[3]
             hashed_password = user_data[1]
         except TypeError:
-            # if the user data is none, a type error will be returned, and it means there is no user with a matching email
-            flash('An account with this email does not exist.')  # uses flask's flash module to pass an error message to the html
+            # if the user data is none, a type error will be returned, and it means there is no user with a matching
+            # email
+            flash(
+                'An account with this email does not exist.')  # uses flask's flash module to pass an error message to
+            # the html
             return redirect("/login")
         if not bcrypt.check_password_hash(hashed_password, password):
             # checks if the password does not match
@@ -344,7 +353,8 @@ def render_confirm_delete_entry_page(entry_id):
         return redirect("/")
     con = connect(DATABASE)
     cur = con.cursor()
-    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, entries.image, users.f_name, users.l_name, entries.date, users.id " \
+    query = "SELECT entries.id, entries.maori, entries.english, entries.definition, entries.level, categories.name, " \
+            "entries.image, users.f_name, users.l_name, entries.date, users.id " \
             "FROM entries " \
             "INNER JOIN categories ON entries.category_id=categories.id " \
             "INNER JOIN users ON entries.user_id=users.id " \
@@ -370,7 +380,8 @@ def render_confirm_delete_category_page(category_id):
     if request.method == "POST":
         # if the user has submitted a delete category form the default url is <category_id> = -1
         print(request.form)
-        return redirect(f'/confirm_delete_category/{request.form.get("cat_id")}')  # redirects to url with right cateogry id
+        return redirect(
+            f'/confirm_delete_category/{request.form.get("cat_id")}')  # redirects to url with right cateogry id
     con = connect(DATABASE)
     cur = con.cursor()
     query = "SELECT categories.id, categories.name, users.f_name, users.l_name, categories.date, users.id " \
